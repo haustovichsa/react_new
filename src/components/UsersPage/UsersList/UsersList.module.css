@@ -1,0 +1,26 @@
+.users {
+    margin: 2rem auto;
+    width: 95%;
+    max-width: 40rem;
+}
+
+.users ul {
+    list-style: none;
+    padding: 1rem;
+}
+
+.users li {
+    border: 1px solid grey;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    display: flex;
+}
+
+.users .buttons {
+    display: flex;
+    margin-left: auto;
+}
+
+.users .button {
+    margin: 0 0.5rem;
+}

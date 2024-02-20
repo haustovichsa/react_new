@@ -1,0 +1,24 @@
+Components structure:
+    - src/components - folder with all custom components
+    - Each component has own file or folder
+    - CamelCase naming
+
+Syntax:
+    - <div></div>, <></> or <React.Fragment> as root tag - Component must have root tag for a return statement
+    - return (...) - for multiple lines
+    - className=”...” - define css class
+    - props - makes component reusable
+    - {} - run basic javascript expression
+    - props.children
+    - Transformation JSX to React.createElement
+
+Events:
+    Full access to native DOM events
+
+    Classic way: document.getElementById("id").addEventListener('click', ()=>{...})
+    React way: <button onClick={()=>{...}} />
+
+    Recommendation: name should end with "handler"
+      Ex.:
+         const clickHandler = () => {...}
+         <button onClick={clickHandler} />

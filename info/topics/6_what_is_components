@@ -1,0 +1,15 @@
+Component is:
+    - reusable building blocks in user interfaces
+    - combination of HTML code, css and Javascript code for same logic
+
+Concepts:
+    - re-usability
+    - separation (one responsibility for one component)
+    - reactivity
+    - declarative approach (define the target state and let React figure out the actual Javascript DOM instructions)
+    - custom HTML element
+
+Component consists of:
+    - HTML
+    - CSS
+    - JavaScript

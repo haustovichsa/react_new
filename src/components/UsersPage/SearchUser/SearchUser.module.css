@@ -1,0 +1,16 @@
+.search {
+    margin: 2rem auto;
+    width: 90%;
+    max-width: 40rem;
+    padding: 1rem;
+}
+
+.search input {
+    font: inherit;
+    display: block;
+    width: 100%;
+    border: 1px solid #2f2f2f;
+    padding: 0.15rem;
+    margin-bottom: 0.5rem;
+}
+

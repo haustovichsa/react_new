@@ -1,0 +1,34 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Andy",
+      "salary": 100
+    },
+    {
+      "id": 2,
+      "name":"Kate",
+      "salary": 200
+    },
+    {
+      "id": 3,
+      "name":"Kate3",
+      "salary": 200
+    },
+    {
+      "id": 4,
+      "name":"Kate4",
+      "salary": 200
+    },
+    {
+      "id": 5,
+      "name":"Kat5",
+      "salary": 200
+    },
+    {
+      "id": 6,
+      "name":"Kate6",
+      "salary": 200
+    }
+  ]
+}

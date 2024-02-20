@@ -1,0 +1,19 @@
+.input label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.input input {
+    font: inherit;
+    display: block;
+    width: 100%;
+    border: 1px solid #2f2f2f;
+    padding: 0.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.input input.invalid {
+    border-color: red;
+    background: pink;
+}
