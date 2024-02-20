@@ -1,0 +1,12 @@
+Documentation: https://react.dev/learn/start-a-new-react-project
+
+create-react-app tool:
+    - GitHub: https://github.com/facebook/create-react-app
+    - Documentation: https://create-react-app.dev/
+
+create-react-app tool gives dev environment with web server which allows us to preview application locally
+
+commands:
+    npx create-react-app app-name
+    cd app-name
+    npm start

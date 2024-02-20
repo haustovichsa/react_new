@@ -1,0 +1,8 @@
+share data between components:
+    - parent to child
+    - child to parent
+    - child to child
+
+component types:
+    - stateless
+    - stateful

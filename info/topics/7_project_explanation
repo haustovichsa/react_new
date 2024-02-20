@@ -1,0 +1,17 @@
+Structure:
+    - package.json
+    - index.html
+    - index.js (first JS file to execute)
+
+JSX (https://reactjs.org/docs/introducing-jsx.html)
+
+How it looks in the browser:
+    - transformed code
+    - jsx is not supported in browser
+    - reloading (compiling after changes)
+
+Debugging:
+    - dev tool (F12) —> Sources tap
+    - original code (window + p)
+    - breakpoints
+    - change JS variable in case when code in breakpoint
