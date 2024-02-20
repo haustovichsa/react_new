@@ -1,6 +1,0 @@
-https://react.dev/reference/react/useRef
-
-useState causes re-render, useRef does not.
-
-https://stackoverflow.com/questions/56455887/react-usestate-or-useref
-    https://web.archive.org/web/20220716221156/https://www.codebeast.dev/usestate-vs-useref-re-render-or-not/
