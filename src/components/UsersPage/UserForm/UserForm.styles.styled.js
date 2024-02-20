@@ -1,8 +1,8 @@
+import styled from 'styled-components';
 import { useState } from 'react';
-import Card from '../../UI/Card/Card';
-import Button from '../../UI/Button/Button';
+import Card from '../../UI/Card/Card.styled';
+import Button from '../../UI/Button/Button.styled';
 import * as ValidationHelper from './helpers/validationHelper';
-import './UserForm.css';
 
 const DEFAULT_NAME = '';
 const DEFAULT_SALARY = '0';
@@ -11,9 +11,32 @@ const DEFAULT_IS_SALARY_VALID = true;
 
 const changeValueHandler = setValue => event => setValue(event.target.value);
 
+const Label = styled.label`
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+`;
+
+const Input = styled.input`
+    font: inherit;
+    display: block;
+    width: 100%;
+    border: 1px solid ${props => (props.invalid ? 'red' : '#2f2f2f')};
+    padding: 0.2rem;
+    margin-bottom: 0.5rem;
+    background: ${props => (props.invalid ? 'pink' : null)};
+`;
+
+const StyledCard = styled(Card)`
+    margin: 2rem auto;
+    padding: 1rem;
+    width: 90%;
+    max-width: 40rem;
+`;
+
 const UserForm = props => {
-    const [name, setName] = useState(props.name || DEFAULT_NAME);
-    const [salary, setSalary] = useState(props.salary || DEFAULT_SALARY);
+    const [name, setName] = useState(DEFAULT_NAME);
+    const [salary, setSalary] = useState(DEFAULT_SALARY);
     const [isNameValid, setNameIsValid] = useState(DEFAULT_IS_NAME_VALID);
     const [isSalaryValid, setSalaryIsValid] = useState(DEFAULT_IS_SALARY_VALID);
 
@@ -34,33 +57,33 @@ const UserForm = props => {
     const isFormValid = ValidationHelper.getIsFormValid(name, salary);
 
     return (
-        <Card className="input">
+        <StyledCard className="input">
             <form onSubmit={submitHandler}>
-                <label htmlFor="name">Name</label>
-                <input
+                <Label htmlFor="name">Name</Label>
+                <Input
                     id="name"
                     type="text"
                     value={name}
                     onChange={changeValueHandler(setName)}
                     onBlur={blurNameHandler}
-                    className={isNameValid ? {} : 'invalid'}
+                    invalid={!isNameValid}
                 />
 
-                <label htmlFor="salary">Salary</label>
-                <input
+                <Label htmlFor="salary">Salary</Label>
+                <Input
                     id="salary"
                     type="number"
                     value={salary}
                     onChange={changeValueHandler(setSalary)}
                     onBlur={blurSalaryHandler}
-                    className={isSalaryValid ? {} : 'invalid'}
+                    invalid={!isSalaryValid}
                 />
 
                 <Button type="submit" disabled={!isFormValid}>
                     Apply
                 </Button>
             </form>
-        </Card>
+        </StyledCard>
     );
 };
 

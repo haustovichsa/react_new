@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Card from '../../UI/Card/Card';
 import Button from '../../UI/Button/Button';
 import * as ValidationHelper from './helpers/validationHelper';
-import './UserForm.css';
+import classes from './UserForm.module.css';
 
 const DEFAULT_NAME = '';
 const DEFAULT_SALARY = '0';
@@ -11,14 +11,10 @@ const DEFAULT_IS_SALARY_VALID = true;
 
 const changeValueHandler = setValue => event => setValue(event.target.value);
 
-const invalidInput = {
-    borderColor: 'red',
-    background: 'pink',
-};
-
 const UserForm = props => {
-    const [name, setName] = useState(props.name || DEFAULT_NAME);
-    const [salary, setSalary] = useState(props.salary || DEFAULT_SALARY);
+    console.log(Object.keys(classes));
+    const [name, setName] = useState(DEFAULT_NAME);
+    const [salary, setSalary] = useState(DEFAULT_SALARY);
     const [isNameValid, setNameIsValid] = useState(DEFAULT_IS_NAME_VALID);
     const [isSalaryValid, setSalaryIsValid] = useState(DEFAULT_IS_SALARY_VALID);
 
@@ -39,7 +35,7 @@ const UserForm = props => {
     const isFormValid = ValidationHelper.getIsFormValid(name, salary);
 
     return (
-        <Card className="input">
+        <Card className={classes.input}>
             <form onSubmit={submitHandler}>
                 <label htmlFor="name">Name</label>
                 <input
@@ -48,7 +44,7 @@ const UserForm = props => {
                     value={name}
                     onChange={changeValueHandler(setName)}
                     onBlur={blurNameHandler}
-                    style={isNameValid ? {} : invalidInput}
+                    className={isNameValid ? {} : classes.invalid}
                 />
 
                 <label htmlFor="salary">Salary</label>
@@ -58,7 +54,7 @@ const UserForm = props => {
                     value={salary}
                     onChange={changeValueHandler(setSalary)}
                     onBlur={blurSalaryHandler}
-                    style={isSalaryValid ? {} : invalidInput}
+                    className={isSalaryValid ? {} : classes.invalid}
                 />
 
                 <Button type="submit" disabled={!isFormValid}>

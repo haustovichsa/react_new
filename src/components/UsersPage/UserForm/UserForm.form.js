@@ -7,13 +7,11 @@ import { getIsFormValid } from './helpers/validationHelper';
 const DEFAULT_NAME = '';
 const DEFAULT_SALARY = '0';
 
+const changeValueHandler = setValue => event => setValue(event.target.value);
+
 const UserForm = props => {
-    const [name, setName] = useState(props.name || DEFAULT_NAME);
-    const [salary, setSalary] = useState(props.salary || DEFAULT_SALARY);
-
-    const changeNameHandler = event => setName(event.target.value);
-
-    const changeSalaryHandler = event => setSalary(event.target.value);
+    const [name, setName] = useState(DEFAULT_NAME);
+    const [salary, setSalary] = useState(DEFAULT_SALARY);
 
     const submitHandler = event => {
         event.preventDefault();
@@ -36,10 +34,15 @@ const UserForm = props => {
         <Card className="input">
             <form onSubmit={submitHandler}>
                 <label htmlFor="name">Name</label>
-                <input id="name" type="text" value={name} onChange={changeNameHandler} />
+                <input id="name" type="text" value={name} onChange={changeValueHandler(setName)} />
 
                 <label htmlFor="salary">Salary</label>
-                <input id="salary" type="number" value={salary} onChange={changeSalaryHandler} />
+                <input
+                    id="salary"
+                    type="number"
+                    value={salary}
+                    onChange={changeValueHandler(setSalary)}
+                />
 
                 <Button type="submit">Apply</Button>
             </form>

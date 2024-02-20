@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import usersData from '../../data/users.json';
-import UserForm from './UserForm/UserForm.form';
+import UserForm from './UserForm/UserForm.useEffect';
 import SearchUser from './SearchUser/SearchUser';
 import UsersList from './UsersList/UsersList';
 import { generateId } from '../../helpers/generateId';
@@ -12,9 +12,17 @@ const addUser = user => users => users.concat({ id: generateId(), ...user });
 
 const deleteUser = user => users => users.filter(i => i.id !== user.id);
 
+const getUsers = () => {
+    return new Promise(resolve => setTimeout(() => resolve(usersData.users), 3000));
+};
+
 const UsersPage = () => {
-    const [users, setUsers] = useState(usersData.users);
+    const [users, setUsers] = useState([]);
     const [searchedUser, setSearchedUser] = useState(null);
+
+    useEffect(() => {
+        getUsers().then(setUsers);
+    }, []);
 
     const searchHandler = value => setSearchedUser(value);
 

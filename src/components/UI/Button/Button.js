@@ -1,11 +1,11 @@
-import styles from './Button.module.css';
+import classes from './Button.module.css';
 
-const Button = (props) => {
+const Button = props => {
     return (
-        <button {...props} disabled={props.disabled} className={styles.button}>
+        <button {...props} disabled={props.disabled} className={classes.button}>
             {props.children}
         </button>
-    )
+    );
 };
 
 export default Button;

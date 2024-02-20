@@ -1,95 +1,45 @@
 import { useState } from 'react';
-import styles from './UserForm.module.css'
-import Card from '../../../UI/Card/Card';
-import Button from '../../../UI/Button/Button';
-import ErrorModal from "../../../UI/ErrorModal/ErrorModal";
-import { getValidationError } from './helpers/getValidationError';
+import './UserForm.css';
+import Card from '../../UI/Card/Card';
+import Button from '../../UI/Button/Button';
 
-const DEFAULT_NAME = '';
-const DEFAULT_SALARY = '0';
-const EMPTY_ERROR = null;
+const initialState = {
+    name: '',
+    salary: '0',
+};
 
-const UserForm = (props) => {
-    const [userData, setUserData] = useState({
-        name: DEFAULT_NAME,
-        salary: DEFAULT_SALARY,
-        error: EMPTY_ERROR,
-    })
+const UserForm = () => {
+    const [userData, setUserData] = useState(initialState);
 
-    const changeNameHandler = (event) => {
-        setUserData((prevState) => ({
+    const changeNameHandler = event => {
+        setUserData(prevState => ({
             ...prevState,
             name: event.target.value,
         }));
-    }
-    const changeSalaryHandler = (event) => {
-        setUserData((prevState) => ({
+    };
+    const changeSalaryHandler = event => {
+        setUserData(prevState => ({
             ...prevState,
             salary: event.target.value,
         }));
-    }
-    const confirmErrorHandler = () => {
-        setUserData((prevState) => ({
-            ...prevState,
-            error: EMPTY_ERROR,
-        }))
-    }
-
-    const submitHandler = (event) => {
-        event.preventDefault();
-
-        const {name, salary} = userData;
-        const validationError = getValidationError(name, salary);
-
-        if (validationError) {
-            setUserData((prevState) => ({
-                ...prevState,
-                error: validationError,
-            }))
-            return;
-        }
-
-        props.onGetUser({ name, salary });
-
-        setUserData((prevState) => ({
-            ...prevState,
-            salary: DEFAULT_SALARY,
-            name: DEFAULT_NAME,
-        }));
-    }
+    };
 
     return (
-        <>
-            {
-                userData.error && <ErrorModal
-                    title={userData.error.title}
-                    message={userData.error.message}
-                    onConfirm={confirmErrorHandler}
-                />
-            }
-            <Card className={styles.input}>
-                <form onSubmit={submitHandler}>
-                    <label htmlFor="name">Name</label>
-                    <input
-                        id="name"
-                        type="text"
-                        value={userData.name}
-                        onChange={changeNameHandler}
-                    />
+        <Card className="input">
+            <label htmlFor="name">Name</label>
+            <input id="name" type="text" value={userData.name} onChange={changeNameHandler} />
 
-                    <label htmlFor="salary">Salary</label>
-                    <input
-                        id="salary"
-                        type="number"
-                        value={userData.salary}
-                        onChange={changeSalaryHandler}
-                    />
+            <label htmlFor="salary">Salary</label>
+            <input
+                id="salary"
+                type="number"
+                value={userData.salary}
+                onChange={changeSalaryHandler}
+            />
 
-                    <Button type="submit">Apply</Button>
-                </form>
-            </Card>
-        </>
+            <Button type="submit">Apply</Button>
+        </Card>
     );
-}
+};
 
 export default UserForm;

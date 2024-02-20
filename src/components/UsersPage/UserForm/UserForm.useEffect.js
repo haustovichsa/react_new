@@ -1,22 +1,30 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './UserForm.css';
 import Card from '../../UI/Card/Card';
 import Button from '../../UI/Button/Button';
 import ErrorModal from '../../UI/ErrorModal/ErrorModal';
 import { getValidationError } from './helpers/getValidationError';
+import Input from '../../UI/Input/Input.useEffect';
 
 const DEFAULT_NAME = '';
 const DEFAULT_SALARY = '0';
 const DEFAULT_ERROR = null;
 
-const changeValueHandler = setValue => event => setValue(event.target.value);
-
 const UserForm = props => {
     const [name, setName] = useState(DEFAULT_NAME);
     const [salary, setSalary] = useState(DEFAULT_SALARY);
     const [error, setError] = useState(DEFAULT_ERROR);
+    const nameRef = useRef();
 
     const confirmErrorHandler = () => setError(DEFAULT_ERROR);
+
+    useEffect(() => {
+        nameRef.current.focus();
+    }, []);
+
+    useEffect(() => {
+        console.log('UserForm render');
+    });
 
     const submitHandler = event => {
         event.preventDefault();
@@ -47,20 +55,21 @@ const UserForm = props => {
             )}
             <Card className="input">
                 <form onSubmit={submitHandler}>
-                    <label htmlFor="name">Name</label>
-                    <input
+                    <Input
+                        label="Name"
                         id="name"
                         type="text"
                         value={name}
-                        onChange={changeValueHandler(setName)}
+                        ref={nameRef}
+                        onChange={setName}
                     />
 
-                    <label htmlFor="salary">Salary</label>
-                    <input
+                    <Input
+                        label="Salary"
                         id="salary"
                         type="number"
                         value={salary}
-                        onChange={changeValueHandler(setSalary)}
+                        onChange={setSalary}
                     />
 
                     <Button type="submit">Apply</Button>

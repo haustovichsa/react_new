@@ -17,8 +17,8 @@ const invalidInput = {
 };
 
 const UserForm = props => {
-    const [name, setName] = useState(props.name || DEFAULT_NAME);
-    const [salary, setSalary] = useState(props.salary || DEFAULT_SALARY);
+    const [name, setName] = useState(DEFAULT_NAME);
+    const [salary, setSalary] = useState(DEFAULT_SALARY);
     const [isNameValid, setNameIsValid] = useState(DEFAULT_IS_NAME_VALID);
     const [isSalaryValid, setSalaryIsValid] = useState(DEFAULT_IS_SALARY_VALID);
 
@@ -58,7 +58,7 @@ const UserForm = props => {
                     value={salary}
                     onChange={changeValueHandler(setSalary)}
                     onBlur={blurSalaryHandler}
-                    className={isSalaryValid ? '' : ''}
+                    style={isSalaryValid ? {} : invalidInput}
                 />
 
                 <Button type="submit" disabled={!isFormValid}>

@@ -11,14 +11,9 @@ const DEFAULT_IS_SALARY_VALID = true;
 
 const changeValueHandler = setValue => event => setValue(event.target.value);
 
-const invalidInput = {
-    borderColor: 'red',
-    background: 'pink',
-};
-
 const UserForm = props => {
-    const [name, setName] = useState(props.name || DEFAULT_NAME);
-    const [salary, setSalary] = useState(props.salary || DEFAULT_SALARY);
+    const [name, setName] = useState(DEFAULT_NAME);
+    const [salary, setSalary] = useState(DEFAULT_SALARY);
     const [isNameValid, setNameIsValid] = useState(DEFAULT_IS_NAME_VALID);
     const [isSalaryValid, setSalaryIsValid] = useState(DEFAULT_IS_SALARY_VALID);
 
@@ -48,7 +43,7 @@ const UserForm = props => {
                     value={name}
                     onChange={changeValueHandler(setName)}
                     onBlur={blurNameHandler}
-                    style={isNameValid ? {} : invalidInput}
+                    className={isNameValid ? {} : 'invalid'}
                 />
 
                 <label htmlFor="salary">Salary</label>
@@ -58,7 +53,7 @@ const UserForm = props => {
                     value={salary}
                     onChange={changeValueHandler(setSalary)}
                     onBlur={blurSalaryHandler}
-                    style={isSalaryValid ? {} : invalidInput}
+                    className={isSalaryValid ? {} : 'invalid'}
                 />
 
                 <Button type="submit" disabled={!isFormValid}>

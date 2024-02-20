@@ -1,59 +1,101 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
 import Card from '../../UI/Card/Card';
 import Button from '../../UI/Button/Button';
 import * as ValidationHelper from './helpers/validationHelper';
 import classes from './UserForm.module.css';
+import Input from '../../UI/Input/Input.useEffect';
 
-const DEFAULT_NAME = '';
-const DEFAULT_SALARY = '0';
-const DEFAULT_IS_NAME_VALID = true;
-const DEFAULT_IS_SALARY_VALID = true;
+const initialState = {
+    name: '',
+    isNameValid: true,
+    salary: '',
+    isSalaryValid: true,
+};
 
-const changeValueHandler = setValue => event => setValue(event.target.value);
+const CHANGE_NAME = 'CHANGE_NAME';
+const BLUR_NAME = 'BLUR_USER_NAME';
+const CHANGE_SALARY = 'CHANGE_SALARY';
+const BLUR_SALARY = 'BLUR_SALARY';
+const CLEAR_FORM = 'CLEAR_FORM';
+
+const reducer = (state, action) => {
+    switch (action.type) {
+        case CHANGE_NAME: {
+            return {
+                ...state,
+                name: action.payload,
+            };
+        }
+        case BLUR_NAME: {
+            return {
+                ...state,
+                isNameValid: ValidationHelper.isNameValid(state.name),
+            };
+        }
+        case CHANGE_SALARY: {
+            return {
+                ...state,
+                salary: action.payload,
+            };
+        }
+        case BLUR_SALARY: {
+            return {
+                ...state,
+                isSalaryValid: ValidationHelper.isSalaryValid(state.salary),
+            };
+        }
+        case CLEAR_FORM: {
+            return initialState;
+        }
+        default: {
+            return state;
+        }
+    }
+};
+
+const getIsFormValid = state => ValidationHelper.getIsFormValid(state.name, state.salary);
 
 const UserForm = props => {
-    console.log(Object.keys(classes));
-    const [name, setName] = useState(DEFAULT_NAME);
-    const [salary, setSalary] = useState(DEFAULT_SALARY);
-    const [isNameValid, setNameIsValid] = useState(DEFAULT_IS_NAME_VALID);
-    const [isSalaryValid, setSalaryIsValid] = useState(DEFAULT_IS_SALARY_VALID);
+    const [state, dispatch] = useReducer(reducer, initialState);
 
-    const blurNameHandler = () => setNameIsValid(ValidationHelper.isNameValid(name));
-    const blurSalaryHandler = () => setSalaryIsValid(ValidationHelper.isSalaryValid(salary));
-
+    const nameChangeHandler = value => dispatch({ type: CHANGE_NAME, payload: value });
+    const salaryChangeHandler = value => dispatch({ type: CHANGE_SALARY, payload: value });
+    const blurNameHandler = () => dispatch({ type: BLUR_NAME });
+    const blurSalaryHandler = () => dispatch({ type: BLUR_SALARY });
     const submitHandler = event => {
         event.preventDefault();
 
         if (props.onGetUser) {
+            const { name, salary } = state;
             props.onGetUser({ name, salary });
         }
 
-        setName(DEFAULT_NAME);
-        setSalary(DEFAULT_SALARY);
+        dispatch({ type: CLEAR_FORM });
     };
 
-    const isFormValid = ValidationHelper.getIsFormValid(name, salary);
+    const { name, salary, isNameValid, isSalaryValid } = state;
+    const isFormValid = getIsFormValid(state);
 
     return (
         <Card className={classes.input}>
             <form onSubmit={submitHandler}>
-                <label htmlFor="name">Name</label>
-                <input
+                <Input
+                    label="Name"
                     id="name"
                     type="text"
                     value={name}
-                    onChange={changeValueHandler(setName)}
+                    onChange={nameChangeHandler}
                     onBlur={blurNameHandler}
                     className={isNameValid ? {} : classes.invalid}
                 />
 
-                <label htmlFor="salary">Salary</label>
-                <input
+                <Input
+                    label="Salary"
                     id="salary"
                     type="number"
                     value={salary}
-                    onChange={changeValueHandler(setSalary)}
                     onBlur={blurSalaryHandler}
+                    onChange={salaryChangeHandler}
                     className={isSalaryValid ? {} : classes.invalid}
                 />
 

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import './UserForm.css';
+import { useRef, useState } from 'react';
+import classes from './UserForm.module.css';
 import Card from '../../UI/Card/Card';
 import Button from '../../UI/Button/Button';
 import ErrorModal from '../../UI/ErrorModal/ErrorModal';
@@ -7,19 +7,23 @@ import { getValidationError } from './helpers/getValidationError';
 
 const DEFAULT_NAME = '';
 const DEFAULT_SALARY = '0';
-const DEFAULT_ERROR = null;
-
-const changeValueHandler = setValue => event => setValue(event.target.value);
+const EMPTY_ERROR = null;
 
 const UserForm = props => {
-    const [name, setName] = useState(DEFAULT_NAME);
-    const [salary, setSalary] = useState(DEFAULT_SALARY);
-    const [error, setError] = useState(DEFAULT_ERROR);
+    const [error, setError] = useState(EMPTY_ERROR);
 
-    const confirmErrorHandler = () => setError(DEFAULT_ERROR);
+    const nameRef = useRef();
+    const salaryRef = useRef();
+
+    const confirmErrorHandler = () => setError(EMPTY_ERROR);
+
+    const setFocusHandler = () => salaryRef.current.focus();
 
     const submitHandler = event => {
         event.preventDefault();
+
+        const name = nameRef.current.value;
+        const salary = salaryRef.current.value;
 
         const validationError = getValidationError(name, salary);
 
@@ -32,8 +36,8 @@ const UserForm = props => {
             props.onGetUser({ name, salary });
         }
 
-        setName(DEFAULT_NAME);
-        setSalary(DEFAULT_SALARY);
+        nameRef.current.value = DEFAULT_NAME;
+        salaryRef.current.value = DEFAULT_SALARY;
     };
 
     return (
@@ -45,25 +49,18 @@ const UserForm = props => {
                     onConfirm={confirmErrorHandler}
                 />
             )}
-            <Card className="input">
+            <Card className={classes.input}>
                 <form onSubmit={submitHandler}>
                     <label htmlFor="name">Name</label>
-                    <input
-                        id="name"
-                        type="text"
-                        value={name}
-                        onChange={changeValueHandler(setName)}
-                    />
+                    <input id="name" type="text" ref={nameRef} />
 
                     <label htmlFor="salary">Salary</label>
-                    <input
-                        id="salary"
-                        type="number"
-                        value={salary}
-                        onChange={changeValueHandler(setSalary)}
-                    />
+                    <input id="salary" type="number" ref={salaryRef} />
 
                     <Button type="submit">Apply</Button>
+                    <Button type="button" onClick={setFocusHandler}>
+                        Set focus
+                    </Button>
                 </form>
             </Card>
         </>
