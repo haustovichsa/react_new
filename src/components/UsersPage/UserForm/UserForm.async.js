@@ -11,6 +11,7 @@ const DEFAULT_SALARY = '0';
 const DEFAULT_ERROR = null;
 
 const UserForm = props => {
+    console.log('my UserForm');
     const [name, setName] = useState(DEFAULT_NAME);
     const [salary, setSalary] = useState(DEFAULT_SALARY);
     const [error, setError] = useState(DEFAULT_ERROR);
@@ -23,6 +24,7 @@ const UserForm = props => {
     }, []);
 
     const { user } = props;
+
     useEffect(() => {
         if (user) {
             setName(user.name);
@@ -65,7 +67,7 @@ const UserForm = props => {
                         type="text"
                         value={name}
                         ref={nameRef}
-                        onChange={value => setName(value)}
+                        onChange={setName}
                     />
 
                     <Input

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import classes from './UserForm.module.css';
 import Card from '../../UI/Card/Card';
 import Button from '../../UI/Button/Button';
@@ -16,11 +16,9 @@ const UserForm = props => {
     const nameRef = useRef();
     const salaryRef = useRef();
 
-    /*
     useEffect(() => {
         salaryRef.current.focus();
     }, []);
-    */
 
     const confirmErrorHandler = () => setError(EMPTY_ERROR);
 

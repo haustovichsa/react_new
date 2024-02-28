@@ -44,7 +44,7 @@ const UserForm = props => {
                     value={name}
                     onChange={changeValueHandler(setName)}
                     onBlur={blurNameHandler}
-                    className={isNameValid ? {} : classes.invalid}
+                    className={isNameValid ? '' : classes.invalid}
                 />
 
                 <label htmlFor="salary">Salary</label>
@@ -54,7 +54,7 @@ const UserForm = props => {
                     value={salary}
                     onChange={changeValueHandler(setSalary)}
                     onBlur={blurSalaryHandler}
-                    className={isSalaryValid ? {} : classes.invalid}
+                    className={isSalaryValid ? '' : classes.invalid}
                 />
 
                 <Button type="submit" disabled={!isFormValid}>
