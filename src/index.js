@@ -27,11 +27,20 @@ import './index.css';
 // import App from './components/UsersPage/UserForm/UserForm.useRef.forward';
 // 15_useEffect
 // import App from './components/UsersPage/UserForm/UserForm.useEffect';
-import App from './components/UsersPage/UsersPage.useEffect';
+// import App from './components/UsersPage/UsersPage.useEffect';
 // 16_useReducer
 // import App from './components/UsersPage/UserForm/UserForm.useReducer';
 // 17_async
 // import App from './components/UsersPage/UsersPage.async';
+// 18_useMemo
+// import App from './components/UsersPage/UsersPage.useMemo';
+// 19_useMemo
+// import App from './components/UsersPage/UsersPage.useCallback';
+// 20_customHook
+// import App from './components/UsersPage/UsersPage.customHook';
+// code
+// import App from './components/UsersPage/UsersPage.async.code';
+import App from './components/UsersPage/UsersPage.usersList';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App />);

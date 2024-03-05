@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import UserForm from './UserForm/UserForm.async';
 import SearchUser from './SearchUser/SearchUser';
 import UsersList from './UsersList/UsersList';
-import UsersApi from '../../api/usersApi';
 import UsersHelper from '../../helpers/usersHelper';
 import Spinner from '../UI/Spinner/Spinner';
 import ErrorModal from '../UI/ErrorModal/ErrorModal';
+import UsersApi from '../../api/usersApi';
 
 export const USERS_API_ERROR = {
     GET_USERS: 'GET_USERS',
@@ -21,56 +21,66 @@ const UsersPage = () => {
     const [searchedUser, setSearchedUser] = useState(null);
     const [editedUser, setEditedUser] = useState(null);
 
+    const getUsers = async () => {
+        setIsLoading(true);
+        try {
+            const usersApi = await UsersApi.getUsers();
+            setUsers(usersApi);
+        } catch (err) {
+            setError(USERS_API_ERROR.GET_USERS);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const deleteUser = async id => {
+        setIsLoading(true);
+        try {
+            await UsersApi.deleteUser(id);
+            const stateUsers = UsersHelper.deleteUser(users, id);
+            setUsers(stateUsers);
+        } catch (err) {
+            setError(USERS_API_ERROR.DELETE_USER);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const addUser = async user => {
+        setIsLoading(true);
+        try {
+            const newUser = await UsersApi.addUser(user);
+            const stateUsers = UsersHelper.addUser(users, newUser);
+            setUsers(stateUsers);
+        } catch (err) {
+            setError(USERS_API_ERROR.ADD_USERS);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const updateUser = async user => {
+        setIsLoading(true);
+        try {
+            const updatedUser = await UsersApi.updateUser(user);
+            const stateUsers = UsersHelper.updateUser(users, updatedUser);
+            setUsers(stateUsers);
+        } catch (err) {
+            setError(USERS_API_ERROR.ADD_USERS);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     useEffect(() => {
         getUsers();
     }, []);
 
-    const showLoading = () => setIsLoading(true);
-    const hideLoading = () => setIsLoading(false);
-
-    const getUsers = async () => {
-        showLoading();
-
-        UsersApi.getUsers()
-            .then(setUsers)
-            .catch(() => setError(USERS_API_ERROR.GET_USERS))
-            .finally(hideLoading);
-    };
-
-    const addUser = async user => {
-        showLoading();
-
-        UsersApi.addUser(user)
-            .then(user => setUsers(users => UsersHelper.addUser(users, user)))
-            .catch(() => setError(USERS_API_ERROR.ADD_USERS))
-            .finally(hideLoading);
-    };
-
-    const updateUser = async user => {
-        showLoading();
-
-        UsersApi.updateUser(user)
-            .then(item => setUsers(users => UsersHelper.updateUser(users, item)))
-            .catch(() => setError(USERS_API_ERROR.UPDATE_USER))
-            .finally(hideLoading);
-    };
-
-    const deleteUserHandler = user => {
-        showLoading();
-
-        UsersApi.deleteUser(user.id)
-            .then(id => setUsers(users => UsersHelper.deleteUser(users, id)))
-            .catch(() => setError(USERS_API_ERROR.DELETE_USER))
-            .finally(hideLoading);
-    };
-
-    const getUserHandler = async user => {
-        setEditedUser(null);
-
+    const getUserHandler = user => {
         if (editedUser) {
-            await updateUser({ ...editedUser, ...user });
+            updateUser({ id: editedUser.id, ...user });
         } else {
-            await addUser(user);
+            addUser(user);
         }
     };
 
@@ -78,9 +88,14 @@ const UsersPage = () => {
         setEditedUser(user);
     };
 
+    const deleteUserHandler = user => {
+        deleteUser(user.id);
+    };
+
     const confirmErrorHandler = async () => {
+        const _error = error;
         setError(null);
-        if (error === USERS_API_ERROR.GET_USERS) {
+        if (_error === USERS_API_ERROR.GET_USERS) {
             await getUsers();
         }
     };
@@ -95,7 +110,6 @@ const UsersPage = () => {
             {error && (
                 <ErrorModal title="api error" message={error} onConfirm={confirmErrorHandler} />
             )}
-
             <UserForm onGetUser={getUserHandler} user={editedUser} />
             <SearchUser onSearch={searchHandler} />
             {filteredUsers.length > 0 && (

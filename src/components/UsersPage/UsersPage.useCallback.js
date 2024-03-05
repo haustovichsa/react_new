@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import UserForm from './UserForm/UserForm.async';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import UserForm from './UserForm/UserForm.memo';
 import SearchUser from './SearchUser/SearchUser';
 import UsersList from './UsersList/UsersList';
 import UsersApi from '../../api/usersApi';
@@ -21,58 +21,58 @@ const UsersPage = () => {
     const [searchedUser, setSearchedUser] = useState(null);
     const [editedUser, setEditedUser] = useState(null);
 
-    useEffect(() => {
-        getUsers();
-    }, []);
-
-    const showLoading = () => setIsLoading(true);
-    const hideLoading = () => setIsLoading(false);
-
-    const getUsers = async () => {
-        showLoading();
+    const getUsers = useCallback(() => {
+        setIsLoading(true);
 
         UsersApi.getUsers()
             .then(setUsers)
             .catch(() => setError(USERS_API_ERROR.GET_USERS))
-            .finally(hideLoading);
-    };
+            .finally(() => setIsLoading(false));
+    }, []);
 
-    const addUser = async user => {
-        showLoading();
+    useEffect(() => {
+        getUsers();
+    }, [getUsers]);
+
+    const addUser = useCallback(user => {
+        setIsLoading(true);
 
         UsersApi.addUser(user)
             .then(user => setUsers(users => UsersHelper.addUser(users, user)))
             .catch(() => setError(USERS_API_ERROR.ADD_USERS))
-            .finally(hideLoading);
-    };
+            .finally(() => setIsLoading(false));
+    }, []);
 
-    const updateUser = async user => {
-        showLoading();
+    const updateUser = useCallback(user => {
+        setIsLoading(true);
 
         UsersApi.updateUser(user)
             .then(item => setUsers(users => UsersHelper.updateUser(users, item)))
             .catch(() => setError(USERS_API_ERROR.UPDATE_USER))
-            .finally(hideLoading);
-    };
+            .finally(() => setIsLoading(false));
+    }, []);
 
-    const deleteUserHandler = user => {
-        showLoading();
+    const deleteUserHandler = useCallback(user => {
+        setIsLoading(true);
 
         UsersApi.deleteUser(user.id)
             .then(id => setUsers(users => UsersHelper.deleteUser(users, id)))
             .catch(() => setError(USERS_API_ERROR.DELETE_USER))
-            .finally(hideLoading);
-    };
+            .finally(() => setIsLoading(false));
+    }, []);
 
-    const getUserHandler = async user => {
-        setEditedUser(null);
+    const getUserHandler = useCallback(
+        async user => {
+            setEditedUser(null);
 
-        if (editedUser) {
-            await updateUser({ ...editedUser, ...user });
-        } else {
-            await addUser(user);
-        }
-    };
+            if (editedUser) {
+                await updateUser({ ...editedUser, ...user });
+            } else {
+                await addUser(user);
+            }
+        },
+        [editedUser, updateUser, addUser],
+    );
 
     const editUserHandler = user => {
         setEditedUser(user);
@@ -87,7 +87,10 @@ const UsersPage = () => {
 
     const searchHandler = value => setSearchedUser(value);
 
-    const filteredUsers = UsersHelper.getFilteredUser(users, searchedUser);
+    const filteredUsers = useMemo(
+        () => UsersHelper.getFilteredUser(users, searchedUser),
+        [users, searchedUser],
+    );
 
     return (
         <>
@@ -95,7 +98,6 @@ const UsersPage = () => {
             {error && (
                 <ErrorModal title="api error" message={error} onConfirm={confirmErrorHandler} />
             )}
-
             <UserForm onGetUser={getUserHandler} user={editedUser} />
             <SearchUser onSearch={searchHandler} />
             {filteredUsers.length > 0 && (

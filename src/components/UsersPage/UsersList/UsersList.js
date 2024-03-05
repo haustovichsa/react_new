@@ -4,6 +4,12 @@ import User from '../User/User';
 import Button from '../../UI/Button/Button';
 
 const UsersList = props => {
+    /*useEffect(() => {
+        return () => {
+            console.log('my UsersList');
+        };
+    }, []);*/
+
     return (
         <Card className={classes.users}>
             <ul>

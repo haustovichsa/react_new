@@ -20,6 +20,7 @@ const UsersPage = () => {
     const [error, setError] = useState(null);
     const [searchedUser, setSearchedUser] = useState(null);
     const [editedUser, setEditedUser] = useState(null);
+    const [, setTest] = useState('');
 
     useEffect(() => {
         getUsers();
@@ -87,7 +88,12 @@ const UsersPage = () => {
 
     const searchHandler = value => setSearchedUser(value);
 
-    const filteredUsers = UsersHelper.getFilteredUser(users, searchedUser);
+    /*const filteredUsers = useMemo(
+        () => UsersHelper.getSlowFilteredUsers(users, searchedUser),
+        [users, searchedUser],
+    );*/
+
+    const filteredUsers = UsersHelper.getSlowFilteredUsers(users, searchedUser);
 
     return (
         <>
@@ -95,7 +101,7 @@ const UsersPage = () => {
             {error && (
                 <ErrorModal title="api error" message={error} onConfirm={confirmErrorHandler} />
             )}
-
+            <SearchUser onSearch={setTest} />
             <UserForm onGetUser={getUserHandler} user={editedUser} />
             <SearchUser onSearch={searchHandler} />
             {filteredUsers.length > 0 && (
