@@ -40,7 +40,66 @@ import './index.css';
 // import App from './components/UsersPage/UsersPage.customHook';
 // code
 // import App from './components/UsersPage/UsersPage.async.code';
-import App from './components/UsersPage/UsersPage.usersList';
+// TODO: page list
+// import App from './components/UsersPage/UsersPage.usersList';
+// TODO: unit tests
+// ...
+// 21_context
+// import App from './components/UsersPage/contexts/context.explanation';
+// import App from './components/UsersPage/UsersPage.context';
+// import App from './components/UsersPage/UsersPage.context.code';
+// import { UsersContextProvider } from './components/UsersPage/contexts/UsersContext';
+// 22_react_router
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import UsersListPage from './pages/UsersListPage';
+import UserFormPage from './pages/UserFormPage';
+import UserSearchPage from './pages/UserSearchPage';
+import { UsersContextProvider } from './components/UsersPage/contexts/UsersContext';
+import Layout from './pages/Layout';
+import ErrorPage from './pages/ErrorPage';
+
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <Layout />,
+        errorElement: <ErrorPage />,
+        children: [
+            { index: true, element: <UsersListPage /> },
+            { path: '/list', element: <UsersListPage /> },
+            { path: '/form', element: <UserFormPage /> },
+            { path: '/form/:id', element: <UserFormPage /> },
+            { path: '/search', element: <UserSearchPage /> },
+        ],
+    },
+]);
+/*
+const routeDefinitions = createRoutesFromElements(
+    <Route>
+        <Route path="/" element={<UsersListPage />} />
+        <Route path="/list" element={<UsersListPage />} />
+        <Route path="/form" element={<UserFormPage />} />
+        <Route path="/search" element={<UserSearchPage />} />
+    </Route>,
+);
+const routerV2 = createBrowserRouter(routeDefinitions);
+ */
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+// root.render(<App />);
+/*root.render(
+    <UsersContextProvider>
+        <App />
+    </UsersContextProvider>,
+);*/
+/*root.render(
+    <UsersContextProvider>
+        <UsersContext>{
+            ctx => <App ctx={ctx} />
+        }</UsersContext>
+    </UsersContextProvider>,
+);*/
+root.render(
+    <UsersContextProvider>
+        <RouterProvider router={router} />
+    </UsersContextProvider>,
+);

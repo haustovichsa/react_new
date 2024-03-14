@@ -14,37 +14,37 @@ const useUsers = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const getUsers = useCallback(() => {
+    const getUsers = useCallback(async () => {
         setIsLoading(true);
 
-        UsersApi.getUsers()
+        await UsersApi.getUsers()
             .then(setUsers)
             .catch(() => setError(USERS_API_ERROR.GET_USERS))
             .finally(() => setIsLoading(false));
     }, []);
 
-    const addUser = useCallback(user => {
+    const addUser = useCallback(async user => {
         setIsLoading(true);
 
-        UsersApi.addUser(user)
+        await UsersApi.addUser(user)
             .then(user => setUsers(users => UsersHelper.addUser(users, user)))
             .catch(() => setError(USERS_API_ERROR.ADD_USERS))
             .finally(() => setIsLoading(false));
     }, []);
 
-    const updateUser = useCallback(user => {
+    const updateUser = useCallback(async user => {
         setIsLoading(true);
 
-        UsersApi.updateUser(user)
+        await UsersApi.updateUser(user)
             .then(item => setUsers(users => UsersHelper.updateUser(users, item)))
             .catch(() => setError(USERS_API_ERROR.UPDATE_USER))
             .finally(() => setIsLoading(false));
     }, []);
 
-    const deleteUser = useCallback(user => {
+    const deleteUser = useCallback(async user => {
         setIsLoading(true);
 
-        UsersApi.deleteUser(user.id)
+        await UsersApi.deleteUser(user.id)
             .then(id => setUsers(users => UsersHelper.deleteUser(users, id)))
             .catch(() => setError(USERS_API_ERROR.DELETE_USER))
             .finally(() => setIsLoading(false));

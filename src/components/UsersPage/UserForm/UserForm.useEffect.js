@@ -27,6 +27,9 @@ const UserForm = props => {
         if (user) {
             setName(user.name);
             setSalary(user.salary);
+        } else {
+            setName(DEFAULT_NAME);
+            setSalary(DEFAULT_SALARY);
         }
     }, [user]);
 

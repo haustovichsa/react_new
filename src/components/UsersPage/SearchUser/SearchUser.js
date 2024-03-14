@@ -1,16 +1,21 @@
 import classes from './SearchUser.module.css';
 import Card from '../../UI/Card/Card';
+import { useRef } from 'react';
 
-// TODO: need to fix page that calls this component
 const SearchUser = props => {
-    // const [searchValue, setSearchValue] = useState('');
+    const lastChange = useRef();
 
     const { value } = props;
 
-    // useEffect(() => setSearchValue(value), [value])
-
     const changeHandler = event => {
-        props.onSearch(event.target.value);
+        if (lastChange.current) {
+            clearTimeout(lastChange.current);
+        }
+
+        lastChange.current = setTimeout(() => {
+            lastChange.current = null;
+            props.onSearch(event.target.value);
+        }, 500);
     };
 
     return (
