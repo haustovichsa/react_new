@@ -18,10 +18,34 @@ const UserForm = props => {
 
     const confirmErrorHandler = () => setError(DEFAULT_ERROR);
 
+    /*
     useEffect(() => {
-        nameRef.current.focus();
+        console.log('useEffect: []');
     }, []);
 
+    useEffect(() => {
+        console.log('useEffect: no dependencies');
+    });
+
+    useEffect(() => {
+        console.log('useEffect: name');
+    }, [name]);
+
+    useEffect(() => {
+        console.log('useEffect: salary');
+    }, [salary]);
+
+    useEffect(() => {
+        console.log('useEffect: salary');
+        return () => {
+            console.log('useEffect: salary: cleanup');
+        };
+    }, [salary]);
+
+    useEffect(() => {
+        // nameRef.current.focus();
+    }, []);
+*/
     const { user } = props;
     useEffect(() => {
         if (user) {
@@ -62,14 +86,16 @@ const UserForm = props => {
             )}
             <Card className="input">
                 <form onSubmit={submitHandler}>
-                    <Input
-                        label="Name"
-                        id="name"
-                        type="text"
-                        value={name}
-                        ref={nameRef}
-                        onChange={value => setName(value)}
-                    />
+                    {name.length < 10 && (
+                        <Input
+                            label="Name"
+                            id="name"
+                            type="text"
+                            value={name}
+                            ref={nameRef}
+                            onChange={value => setName(value)}
+                        />
+                    )}
 
                     <Input
                         label="Salary"

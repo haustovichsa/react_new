@@ -1,12 +1,14 @@
 import classes from './SearchUser.module.css';
 import Card from '../../UI/Card/Card';
 import { useRef } from 'react';
+import { useUsersSearchActions } from '../contexts/UserSearchContext';
 
-const SearchUser = props => {
+const SearchUser = () => {
     console.log('SearchUser');
-    const lastChange = useRef();
 
-    const { value } = props;
+    const { setSearchedUser } = useUsersSearchActions();
+
+    const lastChange = useRef();
 
     const changeHandler = event => {
         if (lastChange.current) {
@@ -15,14 +17,13 @@ const SearchUser = props => {
 
         lastChange.current = setTimeout(() => {
             lastChange.current = null;
-            props.onSearch(event.target.value);
+            setSearchedUser(event.target.value);
         }, 500);
     };
 
     return (
         <Card className={classes.search}>
-            <input value={value} onChange={changeHandler} />
-            {props.children}
+            <input onChange={changeHandler} />
         </Card>
     );
 };

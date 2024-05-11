@@ -1,12 +1,15 @@
 import classes from './SearchUser.module.css';
 import Card from '../../UI/Card/Card';
 import { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { setSearchedUser } from '../../../store/base/usersSearch/actions';
 
-const SearchUser = props => {
+const SearchUser = () => {
     console.log('SearchUser');
-    const lastChange = useRef();
 
-    const { value } = props;
+    const dispatch = useDispatch();
+
+    const lastChange = useRef();
 
     const changeHandler = event => {
         if (lastChange.current) {
@@ -15,14 +18,13 @@ const SearchUser = props => {
 
         lastChange.current = setTimeout(() => {
             lastChange.current = null;
-            props.onSearch(event.target.value);
+            dispatch(setSearchedUser(event.target.value));
         }, 500);
     };
 
     return (
         <Card className={classes.search}>
-            <input value={value} onChange={changeHandler} />
-            {props.children}
+            <input onChange={changeHandler} />
         </Card>
     );
 };

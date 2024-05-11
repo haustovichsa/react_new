@@ -1,32 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classes from './Input.module.css';
 
 const Input = React.forwardRef(({ id, label, type, value, onChange, ...restProps }, ref) => {
-    const [inputValue, setValue] = useState(value ?? '');
+    const [inputValue, setInputValue] = useState(value ?? '');
+    const lastChange = useRef();
 
     useEffect(() => {
-        const timeout = setTimeout(() => {
-            onChange(inputValue);
-        }, 200);
-
-        return () => {
-            clearTimeout(timeout);
-        };
-    }, [inputValue, onChange]);
-
-    useEffect(() => {
-        setValue(value);
+        setInputValue(value);
     }, [value]);
 
-    /*useEffect(() => {
-        return () => {
-            console.log('[Input]: cleanup code here');
-        };
-    }, []);*/
-
     const onChangeValueHandler = event => {
-        setValue(event.target.value);
+        setInputValue(event.target.value);
+        if (lastChange.current) {
+            clearTimeout(lastChange.current);
+        }
+
+        lastChange.current = setTimeout(() => {
+            lastChange.current = null;
+            onChange(event.target.value);
+        }, 300);
     };
+
+    console.log('my Input');
 
     return (
         <div className={classes.input}>
@@ -34,8 +29,8 @@ const Input = React.forwardRef(({ id, label, type, value, onChange, ...restProps
             <input
                 id={id}
                 ref={ref}
-                type={type}
                 value={inputValue}
+                type={type}
                 onChange={onChangeValueHandler}
                 {...restProps}
             />

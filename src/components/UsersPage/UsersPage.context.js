@@ -1,52 +1,25 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import UserForm from './UserForm/UserForm.customHook';
-import SearchUser from './SearchUser/SearchUser';
-import UsersList from './UsersList/UsersList.context';
+import React, { useEffect } from 'react';
+import UserForm from './UserForm/UserForm.redux';
+import SearchUser from './SearchUser/SearchUser.redux';
+import UsersList from './UsersList/UsersList.redux';
 import Spinner from '../UI/Spinner/Spinner';
 import ErrorModal from '../UI/ErrorModal/ErrorModal';
 import { USERS_API_ERROR } from './hooks/useUsers';
-import UsersContext from './contexts/UsersContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { getError, getIsLoading } from '../../store/base/users/selectors';
+import { cleanError, getUsersAsync } from '../../store/base/users/actions';
 
-const UsersPage = () => {
-    const { users, error, isLoading, clearError, getUsers, addUser, updateUser, deleteUser } =
-        useContext(UsersContext);
+const ErrorWithLoading = () => {
+    const dispatch = useDispatch();
+    const error = useSelector(getError);
+    const isLoading = useSelector(getIsLoading);
 
-    const [searchedUser, setSearchedUser] = useState(null);
-    const [editedUser, setEditedUser] = useState(null);
-
-    useEffect(() => {
-        getUsers();
-    }, [getUsers]);
-
-    const getUserHandler = useCallback(
-        async user => {
-            setEditedUser(null);
-
-            if (editedUser) {
-                await updateUser({ ...editedUser, ...user });
-            } else {
-                await addUser(user);
-            }
-        },
-        [editedUser, updateUser, addUser],
-    );
-
-    const editUserHandler = user => {
-        setEditedUser(user);
-    };
-
-    const deleteUserHandler = user => {
-        deleteUser(user);
-    };
-
-    const confirmErrorHandler = async () => {
-        clearError();
+    const confirmErrorHandler = () => {
+        dispatch(cleanError());
         if (error === USERS_API_ERROR.GET_USERS) {
-            await getUsers();
+            dispatch(getUsersAsync());
         }
     };
-
-    const searchHandler = value => setSearchedUser(value);
 
     return (
         <>
@@ -54,14 +27,25 @@ const UsersPage = () => {
             {error && (
                 <ErrorModal title="api error" message={error} onConfirm={confirmErrorHandler} />
             )}
-            <UserForm onGetUser={getUserHandler} user={editedUser} />
-            <SearchUser onSearch={searchHandler} />
+        </>
+    );
+};
 
-            <UsersList
-                searchedUser={searchedUser}
-                onEditUser={editUserHandler}
-                onDeleteUser={deleteUserHandler}
-            />
+const UsersPage = () => {
+    console.log('UsersPage');
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getUsersAsync());
+    }, []);
+
+    return (
+        <>
+            <ErrorWithLoading />
+            <UserForm />
+            <SearchUser />
+            <UsersList />
         </>
     );
 };

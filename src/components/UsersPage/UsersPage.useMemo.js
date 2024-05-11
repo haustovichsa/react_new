@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import UserForm from './UserForm/UserForm.async';
 import SearchUser from './SearchUser/SearchUser';
 import UsersList from './UsersList/UsersList';
@@ -88,12 +88,12 @@ const UsersPage = () => {
 
     const searchHandler = value => setSearchedUser(value);
 
-    /*const filteredUsers = useMemo(
+    const filteredUsers = useMemo(
         () => UsersHelper.getSlowFilteredUsers(users, searchedUser),
         [users, searchedUser],
-    );*/
+    );
 
-    const filteredUsers = UsersHelper.getSlowFilteredUsers(users, searchedUser);
+    // const filteredUsers = UsersHelper.getSlowFilteredUsers(users, searchedUser);
 
     return (
         <>

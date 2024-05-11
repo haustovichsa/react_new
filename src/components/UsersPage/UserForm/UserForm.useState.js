@@ -10,7 +10,9 @@ const UserFormUseState = props => {
     const [name, setName] = useState(DEFAULT_NAME);
     const [salary, setSalary] = useState(DEFAULT_SALARY);
 
-    const changeNameHandler = event => setName(event.target.value);
+    const changeNameHandler = event => {
+        setName(event.target.value);
+    };
 
     const changeSalaryHandler = event => setSalary(event.target.value);
 

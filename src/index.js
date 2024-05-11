@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 
@@ -13,6 +12,7 @@ import './index.css';
 // import App from './components/UsersPage/UsersPage.computed';
 // 10_form
 // import App from './components/UsersPage/UserForm/UserForm.form';
+// import App from './components/UsersPage/UserForm/UserForm.FormData';
 // 11_share_data_between_components
 // import App from './components/UsersPage/UsersPage.dataFlow';
 // 12_styling
@@ -47,18 +47,17 @@ import './index.css';
 // 21_context
 // import App from './components/UsersPage/contexts/context.explanation';
 // import App from './components/UsersPage/UsersPage.context';
-// import App from './components/UsersPage/UsersPage.context.code';
+// import App from './components/UsersPage/UsersPage.context.code'; // TODO: delete
 // import { UsersContextProvider } from './components/UsersPage/contexts/UsersContext';
+// import { UserSearchContextProvider } from './components/UsersPage/contexts/UserSearchContext';
+// import { UsersListContextProvider } from './components/UsersPage/contexts/UsersListContext'; // TODO: REDUX
+// TODO: REDUX
+import App from './components/UsersPage/UsersPage.context';
+import { Provider } from 'react-redux';
+import { store as baseStore } from './store/base/store';
 // 22_react_router
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import UsersListPage from './pages/UsersListPage';
-import UserFormPage from './pages/UserFormPage';
-import UserSearchPage from './pages/UserSearchPage';
-import { UsersContextProvider } from './components/UsersPage/contexts/UsersContext';
-import Layout from './pages/Layout';
-import ErrorPage from './pages/ErrorPage';
-
-const router = createBrowserRouter([
+// 22_react_router
+/*const router = createBrowserRouter([
     {
         path: '/',
         element: <Layout />,
@@ -71,24 +70,40 @@ const router = createBrowserRouter([
             { path: '/search', element: <UserSearchPage /> },
         ],
     },
-]);
+]);*/
 /*
-const routeDefinitions = createRoutesFromElements(
-    <Route>
-        <Route path="/" element={<UsersListPage />} />
-        <Route path="/list" element={<UsersListPage />} />
-        <Route path="/form" element={<UserFormPage />} />
-        <Route path="/search" element={<UserSearchPage />} />
-    </Route>,
-);
-const routerV2 = createBrowserRouter(routeDefinitions);
- */
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <Layout />,
+        errorElement: <ErrorPage />,
+        children: [
+            { index: true, element: <ListUsersPage /> },
+            { path: 'list', element: <ListUsersPage /> },
+            { path: 'form', element: <FormUserPage /> },
+            { path: 'form/:id', element: <FormUserPage /> },
+            { path: 'search', element: <SearchUsersPage /> },
+        ],
+    },
+]);
+*/
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-// root.render(<App />);
+root.render(<App />);
+
+root.render(
+    <Provider store={baseStore}>
+        <App />
+    </Provider>,
+);
+
 /*root.render(
     <UsersContextProvider>
-        <App />
+        <UsersListContextProvider>
+            <UserSearchContextProvider>
+                <App />
+            </UserSearchContextProvider>
+        </UsersListContextProvider>
     </UsersContextProvider>,
 );*/
 /*root.render(
@@ -98,8 +113,18 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
         }</UsersContext>
     </UsersContextProvider>,
 );*/
+/*
 root.render(
+    <UsersContextProvider>
+        <RouterProvider router={router} />{' '}
+    </UsersContextProvider>,
+);
+*/
+/*root.render(
     <UsersContextProvider>
         <RouterProvider router={router} />
     </UsersContextProvider>,
-);
+);*/
+
+
+

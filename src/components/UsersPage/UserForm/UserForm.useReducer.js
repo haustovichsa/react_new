@@ -1,9 +1,9 @@
-import { useCallback, useReducer } from 'react';
+import { useReducer } from 'react';
 import Card from '../../UI/Card/Card';
 import Button from '../../UI/Button/Button';
 import * as ValidationHelper from './helpers/validationHelper';
 import classes from './UserForm.module.css';
-import Input from '../../UI/Input/Input.useEffect';
+import Input from '../../UI/Input/Input.useRef';
 
 const initialState = {
     name: '',
@@ -58,9 +58,9 @@ const getIsFormValid = state => ValidationHelper.getIsFormValid(state.name, stat
 const UserForm = props => {
     const [state, dispatch] = useReducer(reducer, initialState);
 
-    const nameChangeHandler = useCallback(value => {
+    const nameChangeHandler = value => {
         dispatch({ type: CHANGE_NAME, payload: value });
-    }, []);
+    };
 
     const salaryChangeHandler = value => dispatch({ type: CHANGE_SALARY, payload: value });
     const blurNameHandler = () => dispatch({ type: BLUR_NAME });

@@ -12,6 +12,7 @@ const DEFAULT_SALARY = '0';
 const DEFAULT_ERROR = null;
 
 const UserForm = props => {
+    console.log('UserForm');
     const {
         formData: { name, salary },
         setValue,

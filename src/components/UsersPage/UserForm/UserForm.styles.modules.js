@@ -12,7 +12,7 @@ const DEFAULT_IS_SALARY_VALID = true;
 const changeValueHandler = setValue => event => setValue(event.target.value);
 
 const UserForm = props => {
-    console.log(Object.keys(classes));
+    console.log(classes);
     const [name, setName] = useState(DEFAULT_NAME);
     const [salary, setSalary] = useState(DEFAULT_SALARY);
     const [isNameValid, setNameIsValid] = useState(DEFAULT_IS_NAME_VALID);
